@@ -1,7 +1,7 @@
 
 # == move_frog ===============================
-# recebe matriz que representa o mapa e a direção como string
-# limpar a tela
+# recebe matriz que representa o mapa e as direcoes
+# move e printa o mapa
 
 function move_frog(m, left, right, up, down) 
 	position = find(x -> x == "W", m) # Encontra posicao do sapo na matriz
