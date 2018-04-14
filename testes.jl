@@ -30,6 +30,13 @@ while true
 
 	# == update ==============================
 	# essa rotina serve para atualizar tudo que acontece no jogo
+	m = readdlm("map.txt")
+	for j = 1:size(m,1)
+		for i = 1:size(m,2)
+			print(m[j,i])
+		end
+		print("\n\r")
+	end
 	while(user_input == '+')
 
 		print("")	# precisa existir uma funcao que "faz algo"
