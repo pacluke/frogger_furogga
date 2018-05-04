@@ -1,4 +1,73 @@
 
+
+### SEMPRE QUE UM DESSES REQUISITOS FOR PREENCHIDO,
+### apague a descrição dele e ao lado do número, coloque a função ou funções que o representa,
+
+
+"""
+Recursos para a solução funcional:
+
+1) Priorizar o uso de elementos imutáveis e funções puras (por exemplo, sempre precisar manipular listas,
+criar uma nova e não modificar a original, seja por recursão ou através de funções de ordem maior).
+
+2) Especificar e usar funções não nomeadas (ou lambda).
+
+3) Especificar e usar funções que usem currying.
+
+4) Especificar funções que utilizem pattern matching ao máximo, na sua definição.
+
+5) Especificar e usar funções de ordem superior (maior) criadas pelo programador.
+
+6) Usar funções de ordem maior prontas (p.ex., map, reduce, foldr/foldl ou similares).
+
+7) Especificar e usar funções como elementos de 1ª ordem.
+
+8) Usar recursão como mecanismo de iteração (pelo menos em funções de ordem superior que manipulem listas).
+
+"""
+
+### coisas que podem ajudar e serem usados de referencia depois:
+
+## priorização de elementos imutáveis e funções puras - item 1 
+# https://en.wikibooks.org/wiki/Introducing_Julia/Functions#Local_variables_and_changing_the_values_of_arguments
+
+## funções anonimas (não nomeadas) - item 2
+# https://en.wikibooks.org/wiki/Introducing_Julia/Functions#Anonymous_functions
+
+## currying - item 3
+# https://rosettacode.org/wiki/Currying#Julia
+
+## pattern matching - item 4 (se voces não quiserem usar a biblioteca, o prof disse que a gente deve justificar o pq de nao usar no relatorio)
+# http://kmsquire.github.io/Match.jl/latest/
+
+## função de ordem superior - item 5 + funções de primeira ordem - item 7
+# https://rosettacode.org/wiki/Higher-order_functions#Julia
+
+## map, reduce, foldr/foldl - item 6
+# https://en.wikibooks.org/wiki/Introducing_Julia/Functions#Map
+# https://en.wikibooks.org/wiki/Introducing_Julia/Functions#Reduce_and_folding
+
+
+
+
+
+
+function exists(list, element)
+	if(length(lst) == 0) return false
+	else if(list[1] == element) return true
+	else
+		# deepcopy da lista para não modificar a original
+		list02 = deepcopy(list)
+		# deleta o primeiro elemento e chama a função com o resto da lista 
+		deleteat!(list02, 1)
+		return exists(list02, element)
+end
+
+
+
+
+
+
 # == move_frog ===============================
 # recebe matriz que representa o mapa e as direcoes
 # move e printa o mapa
