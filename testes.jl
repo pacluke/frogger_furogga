@@ -48,15 +48,30 @@ criar uma nova e não modificar a original, seja por recursão ou através de fu
 # https://en.wikibooks.org/wiki/Introducing_Julia/Functions#Reduce_and_folding
 
 
+# essa função serve pra manter o mesmo char quando o sapo andar 
+function change_tile(y)
+	if(y[1] > 2 && y[1] < 11)
+		return "~"
+	elseif(y[1] > 11 && y[1] < 20)
+		return ":"
+	else
+		return "."
+	end
+end
+
+
+# função chamada pra acabar o jogo
 function game_over()
 	print_with_color(:blue, "\n\r\t\t\t ******QUIT GAME******\n\r")
 	run(`stty cooked`)
 	exit()
 end
 
+
+# acaba o njogo se tiver colisão com X ou @, os inimigos
 function check_for_colisions(m, x, y)
-	if(m[y[1], x[1]] == "@" || m[y[1], x[1]] == "X") 
-			game_over()
+	if(m[y[1], x[1]] == "@" || m[y[1], x[1]] == "X")
+		game_over()
 	end
 end
 
@@ -71,7 +86,7 @@ function move_frog(m, left, right, up, down)
 	new_y_pos = y + down - up
 	if(new_x_pos[1] > 1 && new_y_pos[1] > 1 && new_y_pos[1] < size(m, 1) && new_x_pos[1] < size(m, 2))
 		check_for_colisions(m, new_x_pos, new_y_pos) # Chama metodo que verifica colisoes e etc...
-		m[position] = "." # 'Remove' sapo daquela posição (TODO: deveria ser subsituido por o caracter de acordo com o devido 'terreno' que o sapo se encontra)
+		m[position] = change_tile(y) # 'Remove' sapo daquela posição (TODO: deveria ser subsituido por o caracter de acordo com o devido 'terreno' que o sapo se encontra)
 		m[new_y_pos, new_x_pos] = "W"	    
 	end
 	return m
@@ -89,8 +104,9 @@ end
 # == print_map ===============================
 # Recebe matriz que representa o mapa do jogo
 # Printa essa matriz
-function print_map(map)
+function print_map(map, stage, score, timer)
 	clear()
+	print_with_color(:red, "    ##FROGGER##\t STAGE: $stage | SCORE: $score | TIME: $timer\n\r")
 	for j = 1:size(map,1)
 		for i = 1:size(map,2)
 			if(map[j, i] == "~")
@@ -118,23 +134,28 @@ function print_map(map)
 end
 # ========================================
 
-
+global stage = 0
+global score = 0
+global timer = 15
 
 m = readdlm("map3.txt")
-print_map(m)
+print_map(m, stage, score, timer)
+
+@async begin
+    
+    while true
+    	sleep(0.5)
+    	#update_matrix
+    end
+
+end
+
 
 while true
 
-	stage::Int64 = 10000
-	score::Int64 = 10000
-	timer::Int64 = 10000
-	lives::Int64 = 10000
-
-	print_with_color(:red, "    ##FROGGER##\t STAGE: $stage | SCORE: $score | TIME: $timer | LIVES: $lives")
-
 	run(`stty raw`)	# stty raw faz com que, alem de nao dar echo no terminal,
-				# tambem libere o STDIN sem precisar dar enter,
-				# ou seja, pega o primeiro caractere digitado e manda.
+					# tambem libere o STDIN sem precisar dar enter,
+					# ou seja, pega o primeiro caractere digitado e manda.
 
 	# == getch ===============================
 	# essa rotina permite que a gente
@@ -151,6 +172,7 @@ while true
 											# a execucao do resto do game.
 	# ========================================
 
+
 	# == update ==============================
 	# essa rotina serve para atualizar tudo que acontece no jogo
 	while(user_input == '+')
@@ -159,22 +181,23 @@ while true
 					# para que o @async funcione
 
 		if(user_input == 'a' || user_input == 'A')
-			print_map(move_frog(m, 1, 0, 0, 0))
+			print_map(move_frog(m, 1, 0, 0, 0), stage, score, timer)
 
 		elseif(user_input == 's' || user_input == 'S')
-			print_map(move_frog(m, 0, 0, 0, 1))
+			print_map(move_frog(m, 0, 0, 0, 1), stage, score, timer)
 
 		elseif(user_input == 'd' || user_input == 'D')
-			print_map(move_frog(m, 0, 1, 0, 0))
+			print_map(move_frog(m, 0, 1, 0, 0), stage, score, timer)
 
 		elseif(user_input == 'w' || user_input == 'W')
-			print_map(move_frog(m, 0, 0, 1, 0))
+			print_map(move_frog(m, 0, 0, 1, 0), stage, score, timer)
 
 		elseif(user_input == 'q' || user_input == 'Q')
 			game_over()
+
 		else
+
 		end
 	end
 	# ========================================
 end
-
