@@ -48,25 +48,17 @@ criar uma nova e não modificar a original, seja por recursão ou através de fu
 # https://en.wikibooks.org/wiki/Introducing_Julia/Functions#Reduce_and_folding
 
 
-
-
-
-
-function exists(list, element)
-	if(length(lst) == 0) return false
-	else if(list[1] == element) return true
-	else
-		# deepcopy da lista para não modificar a original
-		list02 = deepcopy(list)
-		# deleta o primeiro elemento e chama a função com o resto da lista 
-		deleteat!(list02, 1)
-		return exists(list02, element)
+function game_over()
+	print_with_color(:blue, "\n\r\t\t\t ******QUIT GAME******\n\r")
+	run(`stty cooked`)
+	exit()
 end
 
-
-
-
-
+function check_for_colisions(m, x, y)
+	if(m[y[1], x[1]] == "@" || m[y[1], x[1]] == "X") 
+			game_over()
+	end
+end
 
 # == move_frog ===============================
 # recebe matriz que representa o mapa e as direcoes
@@ -74,13 +66,14 @@ end
 
 function move_frog(m, left, right, up, down) 
 	position = find(x -> x == "W", m) # Encontra posicao do sapo na matriz
-	m[position] = "." # 'Remove' sapo daquela posição (TODO: deveria ser subsituido por o caracter de acordo com o devido 'terreno' que o sapo se encontra)
 	y,x = ind2sub(m,position) # Converte posicao de indice em posicao representação por tupla
 	new_x_pos = x + right - left
 	new_y_pos = y + down - up
-	# check_for_colisions() Chama metodo que verifica colisoes e etc...
-	m[new_y_pos, new_x_pos] = "W"
-	print_map(m)
+	if(new_x_pos[1] > 1 && new_y_pos[1] > 1 && new_y_pos[1] < size(m, 1) && new_x_pos[1] < size(m, 2))
+		check_for_colisions(m, new_x_pos, new_y_pos) # Chama metodo que verifica colisoes e etc...
+		m[position] = "." # 'Remove' sapo daquela posição (TODO: deveria ser subsituido por o caracter de acordo com o devido 'terreno' que o sapo se encontra)
+		m[new_y_pos, new_x_pos] = "W"	    
+	end
 	return m
 end
 # ========================================
@@ -100,7 +93,24 @@ function print_map(map)
 	clear()
 	for j = 1:size(map,1)
 		for i = 1:size(map,2)
-			print(map[j,i])
+			if(map[j, i] == "~")
+			    print_with_color(:cyan, map[j, i])
+
+			elseif(map[j, i] == ":")			
+				print(map[j, i])
+
+			elseif(map[j, i] == "@" || map[j, i] == "X")
+				print_with_color(:red, map[j, i])
+
+			elseif(map[j, i] == "^")
+				print_with_color(:magenta, map[j, i], bold=true)
+
+			elseif(map[j, i] == "W")
+				print_with_color(:green, map[j, i], bold=true)
+
+			else
+				print_with_color(:white, map[j, i])
+			end
 		end
 		print("\n\r") # quando stty raw ta ativado, temos que usar \n e \r 
 		# para ir para uma nova linha (\n\r = CRLF)
@@ -108,10 +118,19 @@ function print_map(map)
 end
 # ========================================
 
-m = readdlm("map.txt")
+
+
+m = readdlm("map3.txt")
 print_map(m)
 
 while true
+
+	stage::Int64 = 10000
+	score::Int64 = 10000
+	timer::Int64 = 10000
+	lives::Int64 = 10000
+
+	print_with_color(:red, "    ##FROGGER##\t STAGE: $stage | SCORE: $score | TIME: $timer | LIVES: $lives")
 
 	run(`stty raw`)	# stty raw faz com que, alem de nao dar echo no terminal,
 				# tambem libere o STDIN sem precisar dar enter,
@@ -139,37 +158,23 @@ while true
 		print("")	# precisa existir uma funcao que "faz algo"
 					# para que o @async funcione
 
-		if(user_input == 'a')
-			m = move_frog(m, 1, 0, 0, 0)
+		if(user_input == 'a' || user_input == 'A')
+			print_map(move_frog(m, 1, 0, 0, 0))
 
-		elseif(user_input == 's')
-			m = move_frog(m, 0, 0, 0, 1)
+		elseif(user_input == 's' || user_input == 'S')
+			print_map(move_frog(m, 0, 0, 0, 1))
 
-		elseif(user_input == 'd')
-			m = move_frog(m, 0, 1, 0, 0)
+		elseif(user_input == 'd' || user_input == 'D')
+			print_map(move_frog(m, 0, 1, 0, 0))
 
-		elseif(user_input == 'w')
-			m = move_frog(m, 0, 0, 1, 0)
+		elseif(user_input == 'w' || user_input == 'W')
+			print_map(move_frog(m, 0, 0, 1, 0))
 
-		elseif(user_input == 'q')
-			print("QUIT GAME \n\r")
-			run(`stty cooked`)
-			exit()
+		elseif(user_input == 'q' || user_input == 'Q')
+			game_over()
+		else
 		end
 	end
 	# ========================================
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
 
