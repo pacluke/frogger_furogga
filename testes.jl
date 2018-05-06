@@ -10,17 +10,17 @@ Recursos para a solução funcional:
 1) Priorizar o uso de elementos imutáveis e funções puras (por exemplo, sempre precisar manipular listas,
 criar uma nova e não modificar a original, seja por recursão ou através de funções de ordem maior).
 
-2) Especificar e usar funções não nomeadas (ou lambda).
+2) ---------------------------
 
-3) Especificar e usar funções que usem currying.
+3) ----------------------------
 
 4) Especificar funções que utilizem pattern matching ao máximo, na sua definição.
 
-5) Especificar e usar funções de ordem superior (maior) criadas pelo programador.
+5) ----------------------------
 
-6) Usar funções de ordem maior prontas (p.ex., map, reduce, foldr/foldl ou similares).
+6) ----------------------------
 
-7) Especificar e usar funções como elementos de 1ª ordem.
+7) ----------------------------
 
 8) Usar recursão como mecanismo de iteração (pelo menos em funções de ordem superior que manipulem listas).
 
@@ -59,10 +59,32 @@ function change_tile(y)
 	end
 end
 
+# troca um numero por um caractere
+function replace_matrix(fun, ch)
+	if(fun(1)) return ":"
+	elseif(fun(2)) return "@"
+	elseif(fun(3)) return "~"
+	elseif(fun(4)) return "X"
+	else return ch
+	end
+end
+
+function eval_things(value01)
+	equal(value02) = (value01 == value02)
+	return equal
+end
+
 
 # função chamada pra acabar o jogo
 function game_over()
-	print_with_color(:blue, "\n\r\t\t\t ******QUIT GAME******\n\r")
+	print_with_color(:blue, "\t\t\t ****** QUIT GAME ******\n\r")
+	run(`stty cooked`)
+	exit()
+end
+
+# função chamada pra acabar o jogo
+function next_stage()
+	print_with_color(:blue, "\t\t\t ****** WINNER ******\n\r")
 	run(`stty cooked`)
 	exit()
 end
@@ -72,6 +94,8 @@ end
 function check_for_colisions(m, x, y)
 	if(m[y[1], x[1]] == "@" || m[y[1], x[1]] == "X")
 		game_over()
+	elseif(m[y[1], x[1]] == "^")
+		next_stage()
 	end
 end
 
@@ -104,9 +128,9 @@ end
 # == print_map ===============================
 # Recebe matriz que representa o mapa do jogo
 # Printa essa matriz
-function print_map(map, stage, score, timer)
+function print_map(map, stage, score)
 	clear()
-	print_with_color(:red, "    ##FROGGER##\t STAGE: $stage | SCORE: $score | TIME: $timer\n\r")
+	print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
 	for j = 1:size(map,1)
 		for i = 1:size(map,2)
 			if(map[j, i] == "~")
@@ -134,19 +158,18 @@ function print_map(map, stage, score, timer)
 end
 # ========================================
 
-global stage = 0
+global stage = 01
 global score = 0
-global timer = 15
 
-m = readdlm("map3.txt")
-print_map(m, stage, score, timer)
+global m = map(x -> replace_matrix(eval_things(x), x), readdlm("map3.txt"))
+print_map(m, stage, score)
 
 @async begin
     
-    while true
-    	sleep(0.5)
-    	#update_matrix
-    end
+    # while true
+    # 	sleep(0.5)
+    # 	#update_matrix
+    # end
 
 end
 
@@ -181,21 +204,23 @@ while true
 					# para que o @async funcione
 
 		if(user_input == 'a' || user_input == 'A')
-			print_map(move_frog(m, 1, 0, 0, 0), stage, score, timer)
+			print_map(move_frog(m, 1, 0, 0, 0), stage, score)
 
 		elseif(user_input == 's' || user_input == 'S')
-			print_map(move_frog(m, 0, 0, 0, 1), stage, score, timer)
+			score -= 10
+			print_map(move_frog(m, 0, 0, 0, 1), stage, score)
 
 		elseif(user_input == 'd' || user_input == 'D')
-			print_map(move_frog(m, 0, 1, 0, 0), stage, score, timer)
+			print_map(move_frog(m, 0, 1, 0, 0), stage, score)
 
 		elseif(user_input == 'w' || user_input == 'W')
-			print_map(move_frog(m, 0, 0, 1, 0), stage, score, timer)
+			score += 10
+			print_map(move_frog(m, 0, 0, 1, 0), stage, score)
 
 		elseif(user_input == 'q' || user_input == 'Q')
 			game_over()
 
-		else
+		# else
 
 		end
 	end
