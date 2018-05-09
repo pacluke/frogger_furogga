@@ -69,7 +69,7 @@ function replace_matrix(fun, ch)
 	end
 end
 
-function eval_things(value01)
+Base.@pure function eval_things(value01)
 	equal(value02) = (value01 == value02)
 	return equal
 end
@@ -129,8 +129,8 @@ end
 # Recebe matriz que representa o mapa do jogo
 # Printa essa matriz
 function print_map(map, stage, score)
-	clear()
-	print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+	# clear()
+	# print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
 	for j = 1:size(map,1)
 		for i = 1:size(map,2)
 			if(map[j, i] == "~")
@@ -156,13 +156,50 @@ function print_map(map, stage, score)
 		# para ir para uma nova linha (\n\r = CRLF)
 	end
 end
+
+
+
+function print_map_rec(map, i, j, sizej, sizei)
+	# print da matriz
+	if(map[j, i] == "~")
+	    print_with_color(:cyan, map[j, i])
+	elseif(map[j, i] == ":")			
+		print(map[j, i])
+	elseif(map[j, i] == "@" || map[j, i] == "X")
+		print_with_color(:red, map[j, i])
+	elseif(map[j, i] == "^")
+		print_with_color(:magenta, map[j, i], bold=true)
+	elseif(map[j, i] == "W")
+		print_with_color(:green, map[j, i], bold=true)
+	else
+		print_with_color(:white, map[j, i])
+	end
+
+	# condições da recursão
+	if (i+1 > sizei)
+		print_map_rec(map, 1, j, sizej, sizei)
+	elseif(j+1 > sizej)
+	    print_map_rec(map, i, 1, sizej, sizei)
+	# elseif(i+1 > sizei)
+	# 	print_map_rec(map, 1, j, sizej, sizei)
+	else
+		return 0
+	end
+end
+
+
+
+
 # ========================================
 
 global stage = 01
 global score = 0
 
 global m = map(x -> replace_matrix(eval_things(x), x), readdlm("map3.txt"))
-print_map(m, stage, score)
+# print_map(m, stage, score)
+clear()
+print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+print_map_rec(m, 1, 1, size(m,1), size(m,2))
 
 @async begin
     
@@ -204,23 +241,29 @@ while true
 					# para que o @async funcione
 
 		if(user_input == 'a' || user_input == 'A')
+			clear()
+			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
 			print_map(move_frog(m, 1, 0, 0, 0), stage, score)
 
 		elseif(user_input == 's' || user_input == 'S')
 			score -= 10
+			clear()
+			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
 			print_map(move_frog(m, 0, 0, 0, 1), stage, score)
 
 		elseif(user_input == 'd' || user_input == 'D')
+			clear()
+			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
 			print_map(move_frog(m, 0, 1, 0, 0), stage, score)
 
 		elseif(user_input == 'w' || user_input == 'W')
 			score += 10
+			clear()
+			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
 			print_map(move_frog(m, 0, 0, 1, 0), stage, score)
 
 		elseif(user_input == 'q' || user_input == 'Q')
 			game_over()
-
-		# else
 
 		end
 	end
