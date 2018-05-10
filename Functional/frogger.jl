@@ -1,5 +1,5 @@
 # essa função serve pra manter o mesmo char quando o sapo andar 
-function change_tile(y)
+Base.@pure function change_tile(y)
 	if(y[1] > 2 && y[1] < 11)
 		return "~"
 	elseif(y[1] > 11 && y[1] < 20)
@@ -10,7 +10,7 @@ function change_tile(y)
 end
 
 # troca um numero por um caractere
-function replace_matrix(fun, ch)
+Base.@pure function replace_matrix(fun, ch)
 	if(fun(1)) return ":"
 	elseif(fun(2)) return "@"
 	elseif(fun(3)) return "~"
@@ -19,7 +19,7 @@ function replace_matrix(fun, ch)
 	end
 end
 
-function eval_things(value01)
+Base.@pure function eval_things(value01)
 	equal(value02) = (value01 == value02)
 	return equal
 end
@@ -75,44 +75,43 @@ function clear()
 	run(`clear`) # run(x) chama o comando x direto no terminal
 end
 
-# == print_map ===============================
+# == print_map_rec ===============================
 # Recebe matriz que representa o mapa do jogo
-# Printa essa matriz
-function print_map(map, stage, score)
-	clear()
-	print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
-	for j = 1:size(map,1)
-		for i = 1:size(map,2)
-			if(map[j, i] == "~")
-			    print_with_color(:cyan, map[j, i])
+# Printa essa matriz recursivamente
 
-			elseif(map[j, i] == ":")			
-				print(map[j, i])
+function print_map_rec(map, j, sizej, i, sizei)
+	# print da matriz
+	if(map[j, i] == "~")
+	    print_with_color(:cyan, map[j, i])
+	elseif(map[j, i] == ":")			
+		print(map[j, i])
+	elseif(map[j, i] == "@" || map[j, i] == "X")
+		print_with_color(:red, map[j, i])
+	elseif(map[j, i] == "^")
+		print_with_color(:magenta, map[j, i], bold=true)
+	elseif(map[j, i] == "W")
+		print_with_color(:green, map[j, i], bold=true)
+	else
+		print_with_color(:white, map[j, i])
+	end
 
-			elseif(map[j, i] == "@" || map[j, i] == "X")
-				print_with_color(:red, map[j, i])
-
-			elseif(map[j, i] == "^")
-				print_with_color(:magenta, map[j, i], bold=true)
-
-			elseif(map[j, i] == "W")
-				print_with_color(:green, map[j, i], bold=true)
-
-			else
-				print_with_color(:white, map[j, i])
-			end
-		end
-		print("\n\r") # quando stty raw ta ativado, temos que usar \n e \r 
-		# para ir para uma nova linha (\n\r = CRLF)
+	# condições da recursão
+	if (i+1 > sizei && j+1 > sizej) print("\n\r")
+		return 0
+	elseif(i+1 > sizei) print_map_rec(map, j+1, sizej, 1, sizei)
+	else print_map_rec(map, j, sizej, i+1, sizei)
 	end
 end
+
 # ========================================
 
 global stage = 01
 global score = 0
 
 global m = map(x -> replace_matrix(eval_things(x), x), readdlm("map3.txt"))
-print_map(m, stage, score)
+clear()
+print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+print_map_rec(m, 1, size(m,1), 1, size(m,2))
 
 @async begin
     
@@ -154,23 +153,29 @@ while true
 					# para que o @async funcione
 
 		if(user_input == 'a' || user_input == 'A')
-			print_map(move_frog(m, 1, 0, 0, 0), stage, score)
+			clear()
+			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+			print_map_rec(move_frog(m, 1, 0, 0, 0), 1, size(m,1), 1, size(m,2))
 
 		elseif(user_input == 's' || user_input == 'S')
 			score -= 10
-			print_map(move_frog(m, 0, 0, 0, 1), stage, score)
+			clear()
+			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+			print_map_rec(move_frog(m, 0, 0, 0, 1), 1, size(m,1), 1, size(m,2))
 
 		elseif(user_input == 'd' || user_input == 'D')
-			print_map(move_frog(m, 0, 1, 0, 0), stage, score)
+			clear()
+			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+			print_map_rec(move_frog(m, 0, 1, 0, 0), 1, size(m,1), 1, size(m,2))
 
 		elseif(user_input == 'w' || user_input == 'W')
 			score += 10
-			print_map(move_frog(m, 0, 0, 1, 0), stage, score)
+			clear()
+			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+			print_map_rec(move_frog(m, 0, 0, 1, 0), 1, size(m,1), 1, size(m,2))
 
 		elseif(user_input == 'q' || user_input == 'Q')
 			game_over()
-
-		# else
 
 		end
 	end
