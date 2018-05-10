@@ -117,6 +117,24 @@ function move_frog(m, left, right, up, down)
 end
 # ========================================
 
+
+# == moveCars ===============================
+# Recebe linha a ser movimentada
+# Novo objeto para substituir a posicao que fica em branco
+# Direçao a ser movimentados os carros
+# True move para direita
+function moveCars(streetObject, m, direction)
+	if(isempty(m))
+		return m
+	end
+	if(direction)
+		newSO = m[1]
+		deleteat!(m, 1)
+		return append!(streetObject, moveCars(newSO,m,direction))
+	end
+
+end
+
 # == clear ===============================
 # chama "clear" no terminal para
 # limpar a tela
@@ -143,10 +161,10 @@ function print_map(map, stage, score)
 				print_with_color(:red, map[j, i])
 
 			elseif(map[j, i] == "^")
-				print_with_color(:magenta, map[j, i], bold=true)
+				print_with_color(:magenta, map[j, i])
 
 			elseif(map[j, i] == "W")
-				print_with_color(:green, map[j, i], bold=true)
+				print_with_color(:green, map[j, i])
 
 			else
 				print_with_color(:white, map[j, i])
@@ -163,7 +181,6 @@ global score = 0
 
 global m = map(x -> replace_matrix(eval_things(x), x), readdlm("map3.txt"))
 print_map(m, stage, score)
-
 @async begin
     
     # while true
@@ -184,7 +201,7 @@ while true
 	# essa rotina permite que a gente
 	# consiga pegar a tecla que o usuario
 	# digita no teclado sem que a tecla 
-	# de echo no terminal.
+	# de echo no terminal.	
 
 	user_input = '+'	# + eh um caractere qualquer que serve de placeholder
 						# enquanto o usuario nao digita nada.
@@ -194,7 +211,9 @@ while true
 											# possa continuar no background, sem trancar 
 											# a execucao do resto do game.
 	# ========================================
+	print(" \n\n",m[1,y])
 
+	moveCars('@', m[1], true)
 
 	# == update ==============================
 	# essa rotina serve para atualizar tudo que acontece no jogo
@@ -226,3 +245,4 @@ while true
 	end
 	# ========================================
 end
+
