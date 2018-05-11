@@ -1,6 +1,6 @@
 
 # Frogger (utilizando `Julia`)
-###### Projeto Final da Disciplina de Modelos de Linguagens de Programação (INF/UFRGS).
+###### Projeto Final da Disciplina de Modelos de Linguagens de Programação (INF/UFRGS) Aplicada pelo [Prof. Dr. Lucas Mello Schnorr](https://github.com/schnorr/).
 ---
 Retirado da [página da disciplina](https://github.com/schnorr/mlp/tree/master/projeto):
 O objetivo deste trabalho consiste em fornecer aos alunos a oportunidade de **estudar uma linguagem de programação moderna com características híbridas** (i.e., multiparadigma). O trabalho permitirá aos alunos **demonstrarem que aprenderam os princípios de programação relacionados com os diferentes paradigmas** estudados ao longo do semestre, demonstrando, ainda, a **capacidade de analisar e avaliar linguagens de programação, seguindo os critérios abordados em aula**.
