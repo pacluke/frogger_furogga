@@ -10,12 +10,14 @@ Todos os requisitos, com exceção da utilização de *pattern matching* foram a
 
 ### Instruções de uso
 
-A versão de `Julia` utilizado no projeto foi 0.6.2 e está disponível para donwload no [site da linguagem](https://julialang.org/downloads/).
+A versão de `Julia` utilizado no projeto foi 0.6.2 e está disponível para download no [site da linguagem](https://julialang.org/downloads/).
 Após instalar essa versão de `Julia`, é só entrar na pasta `Functional` do projeto e escrever o comando:
 
     julia --color=yes frogger.jl
 
 O sapo é representado pela letra `W`. Seus inimigos são representados pelo caractere `@` e pela letra `X`. O jogador ganha 10 pontos toda vez que avança uma linha e morre se encostar em algum inimigo. Nosso sapo sabe nadar, portanto ele pode passar pela água. Ao chegar ao fim do cenário e encostar em uma das posições do caractere `^` o jogador ganha a partida.
+
+Para a movimentação do sapo basta usar as teclas `w`, `a`, `s` e `d`, que o movimentam para cima, esquerda, baixo e direita, respectivamente.
 
 ### Estado do projeto funcional
 | Funções Implementas | Explicitamente Pura?  | Observações |
