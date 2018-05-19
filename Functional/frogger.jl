@@ -96,7 +96,9 @@ function print_map_rec(map, j, sizej, i, sizei)
 	end
 
 	# condições da recursão
-	if (i+1 > sizei && j+1 > sizej) print("\n\r") return 0
+	if (i+1 > sizei && j+1 > sizej) 
+		print("\n\r") 
+		return 0
 
 	elseif(i+1 > sizei)
 		print("\n\r")
