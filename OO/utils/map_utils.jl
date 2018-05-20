@@ -11,13 +11,13 @@ type Map
     map::Array{Any,2}
     show::Function
     collision_manager::CollisionManager
-    function show_map(self::Map, frog, enemies) 
+    function show_map(self::Map, frog, game_objects) 
         m = self.map
-        # Put enemies in matrix
+        # Put game_objects in matrix
         for j = 1:size(m,1)
             for i = 1:size(m,2)
-                for enemy_index = 1:size(enemies,1)
-                    m[enemies[enemy_index].super.super.get_x_pos(enemies[enemy_index].super.super), enemies[enemy_index].super.super.get_y_pos(enemies[enemy_index].super.super)] = enemies[enemy_index].super.super.get_symbol(enemies[enemy_index].super.super)
+                for object_index = 1:size(game_objects,1)
+                    m[game_objects[object_index].super.super.get_y_pos(game_objects[object_index].super.super), game_objects[object_index].super.super.get_x_pos(game_objects[object_index].super.super)] = game_objects[object_index].super.super.get_symbol(game_objects[object_index].super.super)
                 end
             end
         end

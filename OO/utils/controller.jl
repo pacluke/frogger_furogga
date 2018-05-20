@@ -5,7 +5,7 @@ export Controller
 
 type Controller
 	capture_keyboard::Function # public
-	function capture_keyboard(char, map, enemies)
+	function capture_keyboard(char, map, game_objects)
 
        
     
@@ -27,19 +27,19 @@ type Controller
             if(user_input == 'a' || user_input == 'A')
                 run(`clear`)
                 char.move(char, 1, 0, 0, 0)
-                map.show(map, char, enemies)
+                map.show(map, char, game_objects)
             elseif(user_input == 's' || user_input == 'S')
                 run(`clear`)
                 char.move(char, 0, 0, 0, 1)
-                map.show(map, char, enemies)
+                map.show(map, char, game_objects)
             elseif(user_input == 'd' || user_input == 'D')
                 run(`clear`)
                 char.move(char, 0, 1, 0, 0)
-                map.show(map, char, enemies)
+                map.show(map, char, game_objects)
             elseif(user_input == 'w' || user_input == 'W')
                 run(`clear`)
                 char.move(char, 0, 0, 1, 0)
-                map.show(map, char, enemies)
+                map.show(map, char, game_objects)
             elseif(user_input == 'q' || user_input == 'Q')
                 run(`stty cooked`)
                 exit()
