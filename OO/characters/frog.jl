@@ -2,19 +2,24 @@ module FrogClass
 
 include("./character.jl")
 
-export Frog, move # Public methods and class
+export Frog # Public class
 
 type Frog <: Character ## 'inheritance'
-	x_pos::Int
-	y_pos::Int
+	x_pos::Int # public
+	y_pos::Int # public
+	move::Function # public
+
+	function move(self::Frog, left, right, up, down)
+		new_x_pos = self.x_pos + right - left
+		new_y_pos = self.y_pos + down - up
+		self.x_pos = new_x_pos
+		self.y_pos = new_y_pos
+	end
+	
+	Frog() = new(10,20, move) # public
 end
-Frog() = Frog(10,20) ## Way of doing default constructor
-move(p::Frog, left, right, up, down)  = 
-begin
-	new_x_pos = p.x_pos + right - left
-	new_y_pos = p.y_pos + down - up
-	p.x_pos = new_x_pos
-	p.y_pos = new_y_pos
-end
+
+
+
 
 end

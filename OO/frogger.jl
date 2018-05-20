@@ -7,7 +7,7 @@ importall MapUtils
 frog = Frog() 
 map = Map() #usa construtor 'default'. Poderia ser passado um mapa especifico como parâmetro
 
-show_map(map, frog)
+map.show(map, frog)
 
 
 # TODO Isolar em uma classe utils
@@ -53,20 +53,20 @@ while true
 
 		if(user_input == 'a' || user_input == 'A')
 			clear()
-			move(frog, 1, 0, 0, 0)
-			show_map(map, frog)
+			frog.move(frog, 1, 0, 0, 0)
+			map.show(map, frog)
 		elseif(user_input == 's' || user_input == 'S')
 			clear()
-			move(frog, 0, 0, 0, 1)
-			show_map(map, frog)
+			frog.move(frog, 0, 0, 0, 1)
+			map.show(map, frog)
 		elseif(user_input == 'd' || user_input == 'D')
 			clear()
-			move(frog, 0, 1, 0, 0)
-			show_map(map, frog)
+			frog.move(frog, 0, 1, 0, 0)
+			map.show(map, frog)
 		elseif(user_input == 'w' || user_input == 'W')
 			clear()
-			move(frog, 0, 0, 1, 0)
-			show_map(map, frog)
+			frog.move(frog, 0, 0, 1, 0)
+			map.show(map, frog)
 		elseif(user_input == 'q' || user_input == 'Q')
 			game_over()
 
