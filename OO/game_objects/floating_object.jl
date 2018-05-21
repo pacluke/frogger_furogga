@@ -12,7 +12,7 @@ export FloatingObject, FloatingObjectType # Public class
 type FloatingObject <: GameObjectClassType ## Extends Character class, so it has get_symbol method for example
 	super::GameObject # 'Superclass'
     move::Function # Public method
-	FloatingObject(x, y, symbol) = new(GameObject(x, y, symbol), move)
+	FloatingObject(x, y, symbol, size) = new(GameObject(x, y, symbol, size), move)
 end
 
 function move(self::FloatingObject)

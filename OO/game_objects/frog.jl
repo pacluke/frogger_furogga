@@ -12,7 +12,7 @@ export Frog, FrogClassType # Public class
 type Frog <: GameObjectClassType ## Extends Character class, so it has get_symbol method for example
 	super::GameObject # 'Superclass'
     move::Function # Public method
-	Frog() = new(GameObject(10,20,'W'), move)
+	Frog() = new(GameObject(10,20,'W', 1), move)
 end
 
 function move(self::Frog, left, right, up, down)

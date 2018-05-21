@@ -17,7 +17,10 @@ type Map
         for j = 1:size(m,1)
             for i = 1:size(m,2)
                 for object_index = 1:size(game_objects,1)
-                    m[game_objects[object_index].super.super.get_y_pos(game_objects[object_index].super.super), game_objects[object_index].super.super.get_x_pos(game_objects[object_index].super.super)] = game_objects[object_index].super.super.get_symbol(game_objects[object_index].super.super)
+                    for k = 0:(game_objects[object_index].super.super.get_size(game_objects[object_index].super.super) - 1)
+                        m[game_objects[object_index].super.super.get_y_pos(game_objects[object_index].super.super), game_objects[object_index].super.super.get_x_pos(game_objects[object_index].super.super)+k] = game_objects[object_index].super.super.get_symbol(game_objects[object_index].super.super)
+                
+                    end
                 end
             end
         end
