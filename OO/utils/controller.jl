@@ -20,8 +20,6 @@ function capture_keyboard(char, map, game_objects)
                         # a execucao do resto do game.
     # ========================================
     
-    @async update_screen(map, char, game_objects)
-
     @async move_objects(game_objects)
 
     # essa rotina serve para atualizar tudo que acontece no jogo
@@ -32,12 +30,20 @@ function capture_keyboard(char, map, game_objects)
      
         if(user_input == 'a' || user_input == 'A')
             char.move(char, 1, 0, 0, 0)
+            run(`clear`)
+            map.show(map, char, game_objects)
         elseif(user_input == 's' || user_input == 'S')
             char.move(char, 0, 0, 0, 1)
+            run(`clear`)
+            map.show(map, char, game_objects)
         elseif(user_input == 'd' || user_input == 'D')
             char.move(char, 0, 1, 0, 0)
+            run(`clear`)
+            map.show(map, char, game_objects)
         elseif(user_input == 'w' || user_input == 'W')
             char.move(char, 0, 0, 1, 0)
+            run(`clear`)
+            map.show(map, char, game_objects)
         elseif(user_input == 'q' || user_input == 'Q')
             run(`stty cooked`)
             exit()
@@ -45,10 +51,6 @@ function capture_keyboard(char, map, game_objects)
     end
 end
 
-function update_screen(map, char, game_objects)  #private function
-    run(`clear`)
-    map.show(map, char, game_objects)
-end
 
 function move_objects(game_objects)  #private function
     for i=1:size(game_objects, 1)
