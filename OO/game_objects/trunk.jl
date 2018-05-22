@@ -7,7 +7,7 @@ export Trunk # Public class
 
 type Trunk <: FloatingObjectType # Extends enemy, that also extends character
     super::FloatingObject # 'Superclass'
-	Trunk(x,y) = new(FloatingObject(x,y,'#',4)) # public
+	Trunk(x,y) = new(FloatingObject(x,y,'#',8)) # public
 end
 
 

@@ -7,7 +7,7 @@ export Car # Public class
 
 type Car <: EnemyClassType # Extends enemy, that also extends character
     super::Enemy # 'Superclass'
-	Car(x,y) = new(Enemy(x,y,'@',2)) # public
+	Car(x,y) = new(Enemy(x,y,'@',2,2)) # public
 end
 
 
