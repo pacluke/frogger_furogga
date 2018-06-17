@@ -214,11 +214,7 @@ end
 
 
 
-#
-function playerInput(moveMap)
 
-
-end
 # ========================================
 
 global stage = 01
