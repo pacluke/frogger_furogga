@@ -35,10 +35,16 @@ function get_y_pos(self::GameObjectClassType)
 end
 
 function set_x_pos(self::GameObjectClassType, x::Int)
+	if x < 0
+		throw("Error! Position cant be negative")
+	end	
 	self._x_pos = x
 end
 
 function set_y_pos(self::GameObjectClassType, y::Int)
+	if y < 0
+		throw("Error! Position cant be negative")
+	end	
 	self._y_pos = y
 end
 

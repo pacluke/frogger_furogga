@@ -8,7 +8,6 @@ MAX_SCREEN_X_SIZE = 80
 
 abstract type FloatingObjectType  <: GameObjectClassType end  
 
-
 export FloatingObject, FloatingObjectType # Public class
 
 type FloatingObject <: GameObjectClassType ## Extends Character class, so it has get_symbol method for example
