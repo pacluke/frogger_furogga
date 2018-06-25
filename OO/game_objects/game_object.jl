@@ -4,7 +4,7 @@ abstract type GameObjectClassType end
 type GameObject <: GameObjectClassType
 	_x_pos::Int # private denoted by the underscore '_'
 	_y_pos::Int # private denoted by the underscore '_'
-	_symbol::Any  # private denoted by the underscore '_'
+	_symbol::Char  # private denoted by the underscore '_'
 	_size::Int # private denoted by the underscore '_'
 	get_symbol::Function # Public
 	get_size::Function # Public

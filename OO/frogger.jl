@@ -4,6 +4,7 @@ include("./game_objects/car.jl")
 include("./game_objects/truck.jl")
 include("./game_objects/trunk.jl")
 include("./game_objects/enemy.jl")
+include("./game_objects/turtles.jl")
 
 include("./utils/map_utils.jl")
 include("./utils/launcher.jl")
@@ -41,6 +42,11 @@ floatingObject17 = Trunk(23, 3)
 floatingObject18 = Trunk(33, 8)
 floatingObject19 = Trunk(22, 9)
 floatingObject20 = Trunk(44, 10)
+floatingObject21 = Turtles(49, 9)
+floatingObject22 = Turtles(10, 8)
+floatingObject23 = Turtles(22, 7)
+floatingObject24 = Turtles(5, 6)
+
 game_objects = [enemy1, enemy2, enemy3, enemy4, 
 enemy5, enemy6, enemy7, enemy8, enemy9, enemy10, enemy11, enemy12,
 floatingObject1, floatingObject2, floatingObject3,
@@ -48,7 +54,8 @@ floatingObject4, floatingObject5 , floatingObject6,
 floatingObject7, floatingObject8, floatingObject9, floatingObject10,
 floatingObject11, floatingObject12, floatingObject13,
 floatingObject14, floatingObject15 , floatingObject16, 
-floatingObject17, floatingObject18, floatingObject19, floatingObject20]
+floatingObject17, floatingObject18, floatingObject19, floatingObject20,
+floatingObject21, floatingObject22, floatingObject23, floatingObject24]
 
 
 frog = Frog() 
