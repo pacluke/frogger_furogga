@@ -1,8 +1,5 @@
-module GameObjectClass
 
 abstract type GameObjectClassType end  
-
-export GameObjectClassType, GameObject, get_symbol, get_size, get_x_pos, get_y_pos, set_x_pos, set_y_pos
 
 type GameObject <: GameObjectClassType
 	_x_pos::Int # private denoted by the underscore '_'
@@ -46,6 +43,4 @@ function set_y_pos(self::GameObjectClassType, y::Int)
 		throw("Error! Position cant be negative")
 	end	
 	self._y_pos = y
-end
-
 end

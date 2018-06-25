@@ -1,18 +1,12 @@
+include("./game_objects/game_object.jl")
 include("./game_objects/frog.jl")
 include("./game_objects/car.jl")
 include("./game_objects/truck.jl")
 include("./game_objects/trunk.jl")
+include("./game_objects/enemy.jl")
 
 include("./utils/map_utils.jl")
 include("./utils/launcher.jl")
-
-
-importall FrogClass
-importall CarClass
-importall TruckClass
-importall MapUtils
-importall LauncherClass
-importall TrunkClass
 
 
 enemy1 = Car(15, 18)
@@ -58,8 +52,8 @@ floatingObject17, floatingObject18, floatingObject19, floatingObject20]
 
 
 frog = Frog() 
-map = Map() #usa construtor 'default'. Poderia ser passado um mapa especifico como parâmetro
+map = Map{GameObjectClassType}(game_objects)
 
 launcher = Launcher()
 
-launcher.start(frog, map, game_objects)
+launcher.start(frog, map)

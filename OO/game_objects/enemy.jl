@@ -1,16 +1,10 @@
-module EnemyClass
 
+include("./movable_object.jl")
 include("./game_object.jl")
 
-using .GameObjectClass
+abstract type EnemyClassType   <: MovableObjectAbstractClassType end  
 
-MAX_SCREEN_X_SIZE = 80
-
-abstract type EnemyClassType  <: GameObjectClassType end  
-
-export Enemy, EnemyClassType  # Public class
-
-type Enemy <: GameObjectClassType ## extends Abstract 'Class'
+type Enemy  <: EnemyClassType 
     super::GameObject # 'Superclass'
     _max_speed::Int
     move::Function # Public method
@@ -27,5 +21,3 @@ function move(self::Enemy)
     end
 end
 
-
-end

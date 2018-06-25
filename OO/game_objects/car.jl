@@ -1,15 +1,10 @@
-module CarClass
 
 include("./enemy.jl")
-using .EnemyClass
 
-export Car # Public class
+abstract type CarClassType  <: EnemyClassType end  
 
-type Car <: EnemyClassType # Extends enemy, that also extends game object
+type Car <: CarClassType 
     super::Enemy # 'Superclass'
 	Car(x,y) = new(Enemy(x,y,'@',2,2)) # public
 end
 
-
-
-end
