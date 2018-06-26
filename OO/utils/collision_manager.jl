@@ -1,10 +1,13 @@
 
-type CollisionManager
+abstract type CollisionManagerClassType end  
+
+
+type CollisionManager <: CollisionManagerClassType
     check_for_colisions::Function #Public method
     CollisionManager() = new(check_for_colisions)
 end
 
-function check_for_colisions(ground)
+function check_for_colisions(self::CollisionManagerClassType, ground)
     if(ground == "@" || ground == "X" || ground == "~")
         game_over()
     elseif(ground == "^")

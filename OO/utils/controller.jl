@@ -1,10 +1,13 @@
 
-type Controller
+abstract type ControllerClassType end  
+
+
+type Controller <: ControllerClassType
 	capture_keyboard::Function # public
 	Controller() = new(capture_keyboard) # public
 end
 
-function capture_keyboard(char, map)
+function capture_keyboard(self::ControllerClassType, char, map)
 
     user_input = '+'	# + eh um caractere qualquer que serve de placeholder
     # enquanto o usuario nao digita nada.

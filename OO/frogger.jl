@@ -63,4 +63,4 @@ map = Map{GameObjectClassType}(game_objects)
 
 launcher = Launcher()
 
-launcher.start(frog, map)
+launcher.start(launcher,frog, map)

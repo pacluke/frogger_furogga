@@ -1,15 +1,15 @@
 
 include("./controller.jl")
 
-export Launcher
+abstract type LauncherClassType end  
 
-type Launcher
-	start::Function # public
-	Launcher() = new(start) # public
+type Launcher <: LauncherClassType
+    start::Function # public
+    _controller::ControllerClassType
+	Launcher() = new(start, Controller()) # public
 end
 
-function start(mainCharacter, map)
-    controller = Controller()
+function start(self::LauncherClassType, mainCharacter, map)
     map.show(map, mainCharacter)
 
     while true
@@ -17,6 +17,6 @@ function start(mainCharacter, map)
         run(`stty raw`)	# stty raw faz com que, alem de nao dar echo no terminal,
                         # tambem libere o STDIN sem precisar dar enter,
                         # ou seja, pega o primeiro caractere digitado e manda.
-        controller.capture_keyboard(mainCharacter, map)
+        self._controller.capture_keyboard(self._controller, mainCharacter, map)
     end
 end

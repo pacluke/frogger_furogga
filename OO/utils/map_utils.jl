@@ -1,7 +1,10 @@
 
 include("./collision_manager.jl")
 
-type Map{T} 
+abstract type MapClassType end  
+
+
+type Map{T} <: MapClassType
     _map::Array{Any,2}
     _game_objects::Array{T,1}
     get_game_objects::Function
@@ -30,7 +33,7 @@ function show_map(self::Map, frog)
     for j = 1:size(m,1)
         for i = 1:size(m,2)
             if(i == frog.super.get_x_pos(frog.super) && j == frog.super.get_y_pos(frog.super))
-                self.collision_manager.check_for_colisions(string(m[j,i]))
+                self.collision_manager.check_for_colisions(self.collision_manager, string(m[j,i]))
                 print(frog.super.get_symbol(frog.super))
             else
                 print(m[j,i])
