@@ -165,40 +165,40 @@ function print_map_rec(map, j, sizej, i, sizei)
 end
 
 #Atualiza o jogo
-function update(updateFrequency)
-	while true
-	sleep(1/updateFrequency)
-	moveAllMap(function fun(j)
-		randV = rand(Int) %2
-		if(j>RIVER_DIVISION)
-			if(randV ==0)
-				return "@"
-			else
-				return ":"
-			end
-		else
-			if(randV ==0)
-				return "X"
-			else
-				return "~"
-			end
-		end
-	end,
-	m,STATIC_LINES,1,size(m,1))
+function update()
 
-	clear()
-	print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
-	print_map_rec(m, 1, size(m,1), 1, size(m,2))
+moveAllMap(function fun(j)
+	randV = rand(Int) %2
+	if(j>RIVER_DIVISION)
+		if(randV ==0)
+			return "@"
+		else
+			return ":"
+		end
+	else
+		if(randV ==0)
+			return "X"
+		else
+			return "~"
+		end
 	end
+end,
+m,STATIC_LINES,1,size(m,1))
+
+clear()
+print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+print_map_rec(m, 1, size(m,1), 1, size(m,2))
+
 
 end
 
 #move todas as linhas gerando objeto apartir da funcao do parametro
 function moveAllMap(funGenerateOBJ,map, unmovableLines,j,sizej)
-	while j in unmovableLines
-		j+=1
+	if( j in unmovableLines)
+		j=moveTomovable(unmovableLines,j)
 	end
 	if(j<sizej)
+		print("mexe:$j\n")
 		newOBJ = funGenerateOBJ(j)
 		if(j%2 == 0)
 			moveLine(newOBJ,map,true,2,(size(m,2)-2),j)
@@ -210,6 +210,14 @@ function moveAllMap(funGenerateOBJ,map, unmovableLines,j,sizej)
 		return
 	end
 
+end
+
+function moveTomovable(unmovableLines,j)
+	if(j in unmovableLines)
+		return moveTomovable(unmovableLines,j+1)
+	end
+	return j
+	#function body
 end
 
 
@@ -230,7 +238,6 @@ print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
 print_map_rec(m, 1, size(m,1), 1, size(m,2))
 
 
-	@async update(2)
 
 
 
@@ -266,32 +273,32 @@ while true
 		
 
 		if(user_input == 'a' || user_input == 'A')
-			#move_frog(m, 1, 0, 0, 0)
-			clear()
-			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
-			print_map_rec(move_frog(m, 1, 0, 0, 0), 1, size(m,1), 1, size(m,2))
+			move_frog(m, 1, 0, 0, 0)
+			#clear()
+			#print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+			#print_map_rec(move_frog(m, 1, 0, 0, 0), 1, size(m,1), 1, size(m,2))
 
 		elseif(user_input == 's' || user_input == 'S')
-			#move_frog(m, 0, 0, 0, 1)
+			move_frog(m, 0, 0, 0, 1)
 			score -= 10
-			clear()
-			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
-			print_map_rec(move_frog(m, 0, 0, 0, 1), 1, size(m,1), 1, size(m,2))
+			#clear()
+			#print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+			#print_map_rec(move_frog(m, 0, 0, 0, 1), 1, size(m,1), 1, size(m,2))
 
 		elseif(user_input == 'd' || user_input == 'D')
-			#move_frog(m, 0, 1, 0, 0)
-			clear()
-			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
-			print_map_rec(move_frog(m, 0, 1, 0, 0), 1, size(m,1), 1, size(m,2))
+			move_frog(m, 0, 1, 0, 0)
+			#clear()
+			#print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+			#print_map_rec(move_frog(m, 0, 1, 0, 0), 1, size(m,1), 1, size(m,2))
 			
 			
 
 		elseif(user_input == 'w' || user_input == 'W')
-			#move_frog(m, 0, 0, 1, 0)
+			move_frog(m, 0, 0, 1, 0)
 			score += 10
-			clear()
-			print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
-			print_map_rec(move_frog(m, 0, 0, 1, 0), 1, size(m,1), 1, size(m,2))
+			#clear()
+			#print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+			#print_map_rec(move_frog(m, 0, 0, 1, 0), 1, size(m,1), 1, size(m,2))
 
 		elseif(user_input == 'q' || user_input == 'Q')
 			
@@ -301,6 +308,7 @@ while true
 
 		end
 	end
+	update()
 	# ========================================
 end
 #@async update(1)
