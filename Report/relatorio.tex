@@ -98,7 +98,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % título
-\title{Entrega Parcial -- Grupo Furogga \\ Projeto Frogger Utilizando Julia (Funcional)} 
+\title{Grupo Furogga \\ Projeto Frogger Utilizando Julia \\ } 
 
 % autor
 \author{Timm do Espirito Santo}{Augusto} % {sobrenome}{nome}
@@ -193,14 +193,24 @@ Este trabalho tem como problema a ser resolvido o desenvolvimento do jogo Frogge
  
  Ao trabalhar com Julia focando no paradigma funcional, percebe-se que a linguagem possui bastante suporte para esse paradigma, mas não foi construída com o propósito de ser uma linguagem funcional. Ao mesmo tempo que a linguagem facilita para o usuário a criação de funções puras sem efeitos colaterais ela também dificulta na criação de estruturas de dados imutáveis e no suporte para cópia dessas estruturas, o que vai contra uma das principais características das linguagens funcionais.
  
-%  \section{Visão Orientada à Objetos}
+\section{Visão Orientada à Objetos}
+ 
+ Julia não possui um bom suporte a orientação a objetos. Na verdade, não existe nesta linguagem nem o conceito de classes de forma explícita, como possuem linguagens orientadas a objetos como Java . No entanto, existe a possibilidade nesta linguagem de tipos abstratos. Além disso, nesta linguagem existem "supertipos", de forma que por exemplo, o tipo \textit{Real} tem como seu "supertipo" \textit{Number}. É importante ressaltar que esses tipos abstratos não podem ser instanciados e servindo apenas como forma de descrever conjuntos de tipos concretos relacionados. 
+ 
+ Por fim, a linguagem da suporte a Tipos Compostos, que é semelhante a uma \textit{struct} da linguagem C por exemplo, sendo uma 
+coleção de campos nomeados, podendo ser instanciada de forma que pode ser tratada como um único valor. Todavia, em Julia, todos os valores são objetos, mas as funções não são empacotadas com os objetos nos quais elas operam, o que faz não ser possível existirem de fato "métodos" (da forma de orientação a objetos)   de um tipo de dado.
+
+Por todos estes motivos, foram necessários juntar estes conceitos e "criar" de alguma forma a representação de uma classe com métodos, a partir destas limitações e também do uso de algumas convenções para que a orientação a objetos fosse aplicada com esta linguagem.
+
+Uma observação a ser feita é que na linguagem Julia existe \textit{métodos} mas estes não tem relação com métodos da orientação a objetos, estes apenas são quando se define  um comportamento para uma função, e isto não está associada a uma classe ou a um objeto.
+
  
 %  \section{Compilador \textit{Just-in-Time} (JIT)}
 
 
  \chapter{Recursos Funcionais}
  
- Os recursos utilizados para a versão funcional do projeto da disciplina foram aplicados com base na documentação da linguagem \cite{Doc} e nos estudos em \cite{FuncPart}. Todas as funções referenciadas nessa seção estão disponíveis no arquivo \textit{frogger.jl} em \url{https://github.com/pacluke/frogger_furogga/tree/entrega_parcial/Functional}.
+ Os recursos utilizados para a versão funcional do projeto da disciplina foram aplicados com base na documentação da linguagem \cite{Doc} e nos estudos em \cite{FuncPart}. Todas as funções referenciadas nessa seção estão disponíveis no arquivo \textit{frogger.jl} em \url{https://github.com/pacluke/frogger_furogga}.
  
  \section{Elementos Imutáveis e Funções Puras}
  
@@ -228,14 +238,14 @@ Este trabalho tem como problema a ser resolvido o desenvolvimento do jogo Frogge
     
     Funções anônimas são funções que não estão vinculadas a um identificador. Além disso, funções anônimas geralmente são Funções de Ordem Superior, como é também no caso da linguagem Julia. Seguindo esta ideia, o projeto possui o uso de funções anônimas em dois momentos diferentes.
     
-    Na linha 057, dentro da função \textit{move$\_$frog}:
+    Na função \textit{move$\_$frog}:
     \begin{lstlisting}[frame=single]
     position = find(x -> x == "W", m)
     \end{lstlisting}
     
     Nesse caso, uma função anonima é passada como parametro para a função \textit{find} que devolve a posição do elemento "W" dentro da matriz \textit{m}. 
     
-    O segundo caso, na linha 111, funciona de forma parecida, mas dessa vez ela assume uma função definida pelo usuário:
+    O segundo caso funciona de forma parecida, mas dessa vez ela assume uma função definida pelo usuário:
     
     \begin{lstlisting}[frame=single]
     m = map(x -> replace_matrix(eval_things(x), x),
@@ -246,7 +256,7 @@ Este trabalho tem como problema a ser resolvido o desenvolvimento do jogo Frogge
     
     A ideia de \textit{currying} é transformar uma função vários argumentos em uma cadeia de funções onde cada uma tem apenas um argumento.
     
-    A utilização desse recurso em Julia é bastante direta, como se percebe na função \textit{eval\_things} na linha 022:
+    A utilização desse recurso em Julia é bastante direta, como se percebe na função \textit{eval\_things}:
     \begin{lstlisting}[frame=single]
     Base.@pure function eval_things(value01)
     	equal(value02) = (value01 == value02)
@@ -254,7 +264,7 @@ Este trabalho tem como problema a ser resolvido o desenvolvimento do jogo Frogge
     end
     \end{lstlisting}
     
-    Essa função retorna uma função que compara um valor com o valor utilizado anteriormente como parâmetro de \textit{eval\_things}. Para exemplificar o uso dessa função, podemos voltar para o exemplo da linha 115:
+    Essa função retorna uma função que compara um valor com o valor utilizado anteriormente como parâmetro de \textit{eval\_things}. Para exemplificar o uso dessa função, podemos voltar para o exemplo:
     
     \begin{lstlisting}[frame=single]
     global m = map(x -> replace_matrix(eval_things(x), x),
@@ -266,7 +276,8 @@ Este trabalho tem como problema a ser resolvido o desenvolvimento do jogo Frogge
  
  \section{Pattern Matching}
  
-    \textit{Pattern matching} permite que padrões simples sejam encontrados em valores e estruturas de dados como listas.
+    \textit{Pattern matching} ou casamento de padrões é a verificação por padrões dentro de uma estrutura de dados. Em linguagens funcionais como OCaml existe uma sintaxe para representar padrões e usar isso como condicional.
+    
     Julia não possui por padrão uma implementação de \textit{pattern matching} ou algo parecido, e o máximo encontrado pelo grupo após pesquisas foi uma biblioteca que não é oficial e que não funcionou a versão de Julia utilizada no trabalho (0.6.2). Por esse motivo o grupo concordou em não utilizar esse recurso no desenvolvimento da versão funcional do \textit{Frogger}.
   
     % \begin{lstlisting}[frame=single]
@@ -288,8 +299,39 @@ Este trabalho tem como problema a ser resolvido o desenvolvimento do jogo Frogge
     \end{lstlisting}
     
     Ela recebe como parâmetro a função \textit{fun} e um elemento \textit{ch} e aplica a função \textit{fun} aos números 1, 2, 3 e 4, caso contrário retorna \textit{ch}. Isso serve para que uma matriz tenha os valores de 1 a 4 substituídos pelos seus respectivos caracteres, ajudando a formar a matriz que controla o jogo.
+    
+    Outro exemplo é a função moveAllMap\textit{moveAllMap} vista abaixo.
+    
+    \begin{lstlisting}[frame=single]
+    function moveAllMap(funGenerateOBJ,map,
+    unmovableLines,j,sizej)
+	if( j in unmovableLines)
+		j=moveTomovable(unmovableLines,j)
+	end
+	if(j<sizej)
+		newOBJ = funGenerateOBJ(j)
+		if(j%2 == 0)
+			moveLine(newOBJ,map,true
+			,2,(size(m,2)-2),j)
+		else
+			moveLine(newOBJ,map,false
+			,2,(size(m,2)-2),j)
+		end
+		moveAllMap(funGenerateOBJ,
+		map,unmovableLines,j+1,sizej)
+	else
+		return
+	end
+
+    end
+    \end{lstlisting}
+    
+
+    
+    Essa função recebe uma função que vai gerar o novo objeto a ser inserido no mapa para a movimentação, como um carro ou um chão. Isso serve para facilitar a reutilização de código, pois assim a criação de objetos pode ser alterada em cada uso da função \textit{moveAllMap} sem maior dificuldades.
+   
  
- \section{Funções de Ordem Maior Fornecidas Pela Linguagem (Map)}
+    \section{Funções de Ordem Maior Fornecidas Pela Linguagem (Map)}
  
     Julia fornece várias funções de ordem maior como \textit{reduce}, \textit{foldl}, \textit{foldr}, entre outras. Foi escolhido pelo grupo a função \textit{map}:
   
@@ -338,17 +380,430 @@ Este trabalho tem como problema a ser resolvido o desenvolvimento do jogo Frogge
     end
     \end{lstlisting}
     
-    A função \textit{print\_map\_rec} é encontrada na linha 82 do arquivo \textit{frogger.jl}.
+    A função \textit{print\_map\_rec} é encontrada no arquivo \textit{frogger.jl}.
+    
+    
+\chapter{Recursos de Orientação a Objetos}
+
+\section{Classes}
+
+Como não existe suporte da linguagem a classes de forma explicita, esta foi definida segundo alguns critérios e implementações. Segue abaixo um exemplo de uma classe:
+    \begin{lstlisting}[frame=single]
+
+abstract type GameObjectClassType end  
+
+type GameObject <: GameObjectClassType
+	_x_pos::Int # private denoted by the underscore '_'
+	_y_pos::Int 
+	_symbol::Char 
+	_size::Int 
+	get_symbol::Function # Public
+	get_size::Function # Public
+	get_x_pos::Function # Public
+	get_y_pos::Function # Public
+	set_x_pos::Function # Public
+	set_y_pos::Function # Public
+	GameObject(x, y, symbol, size) = 
+	new(x, y, symbol, size, get_symbol,
+	get_size, get_x_pos, get_y_pos,
+	set_x_pos, set_y_pos) # public constructor
+end
+
+function get_symbol(self::GameObjectClassType)
+	return self._symbol
+end
+
+function get_size(self::GameObjectClassType)
+    return self._size;
+end
+
+function get_x_pos(self::GameObjectClassType)
+	return self._x_pos
+end
+
+function get_y_pos(self::GameObjectClassType)
+	return self._y_pos
+end
+
+function set_x_pos(self::GameObjectClassType, x::Int)
+	if x < 0
+		throw("Error! Position cant be negative")
+	end	
+	self._x_pos = x
+end
+
+function set_y_pos(self::GameObjectClassType, y::Int)
+	if y < 0
+		throw("Error! Position cant be negative")
+	end	
+	self._y_pos = y
+end
+
+\end{lstlisting}
+    
+Cada classe é um arquivo, como neste caso acima, o arquivo game\_object.jl é uma classe. Isto foi convencionado pelo grupo, de forma que seja possível termos classes nesta linguagem. Em nossa implementação, cada classe precisa ter um tipo abstrato associado, neste caso GameObjectClassType, o que permite o mecanismo de herança e polimorfismo, como será detalhado nas próximas seções.
+
+
+Além disso, existe sempre associado um Tipo Composto concreto, que neste caso é o GameObject que possuí o tipo abstrato GameObjectClassType. Esse tipo composto é que possui todos os atributos da classe além de seus métodos.
+
+Como não é possível existirem métodos de verdade, o que foi feito é que parte dos atributos são funções e estas funções são definidas no mesmo arquivo. Desta forma, é necessário que \textbf{um dos parâmetros destas funções seja o próprio objeto do qual será chamada a função}. Por convenção, sempre este será o primeiro parâmetro e é chamado de \textbf{self}:
+
+\begin{lstlisting}[frame=single]
+function get_x_pos(self::GameObjectClassType)
+	return self._x_pos
+end
+\end{lstlisting}
+
+
+
+Para então vincular essas funções do arquivo com os atributos (formando assim de fato uma classe com métodos), é utilizado o construtor, em que ele associa essas funções. É importante notar que para quem usa essa classe, este não pode definir essas funções na hora de criar o objeto, pois é apenas exposto para ele atributos que de fato devem ser \textit{setados}. Isso pode ser visto abaixo:
+
+\begin{lstlisting}[frame=single]
+
+GameObject(x, y, symbol, size) = new(x, y, 
+symbol, size,
+get_symbol, get_size,
+get_x_pos, get_y_pos,
+set_x_pos, set_y_pos)
+
+\end{lstlisting}
+
+Note que só pode serem definidos x, y, symbol e size na criação do objeto.
+
+
+\section{Encapsulamento e proteção dos atributos}
+
+Como não existe nesta linguagem alguma forma de existir atributos privados, o que foi feito é utilizar uma convenção para definir que algum atributo é privado. Assim como python, foi definido um prefixo para definir que a variável é privada. Neste caso foi utilizado o prefixo "\_". Para acessar esses atributos, foram colocados funções de \textit{getter} e \textit{setter}:
+
+
+\begin{lstlisting}[frame=single]
+
+[...]
+
+type GameObject <: GameObjectClassType
+	_x_pos::Int
+	_y_pos::Int
+	_symbol::Char
+	_size::Int
+	get_symbol::Function # Public
+	get_size::Function # Public
+	get_x_pos::Function # Public
+	get_y_pos::Function # Public
+	set_x_pos::Function # Public
+	set_y_pos::Function # Public
+	GameObject(x, y, symbol, size) = 
+	new(x, y, symbol, size, get_symbol, get_size, 
+	get_x_pos, get_y_pos, set_x_pos, set_y_pos) 
+	# public constructor
+end
+
+[...]
+
+function set_x_pos(self::GameObjectClassType, x::Int)
+	if x < 0
+		throw("Error! Position cant be negative")
+	end	
+	self._x_pos = x
+end
+
+function set_y_pos(self::GameObjectClassType, y::Int)
+	if y < 0
+		throw("Error! Position cant be negative")
+	end	
+	self._y_pos = y
+end
+
+\end{lstlisting}
+
+
+Caso haja uma tentativa de colocar um valor inválido, uma exceção é disparada:
+\begin{lstlisting}[frame=single]
+
+ERROR: LoadError: "Error! Position cant be negative"
+Stacktrace:
+ [1] set_x_pos
+[...]
+\end{lstlisting}
+
+
+Desta forma há a validação dos parâmetros para que estejam dentro do esperado.
+
+\section{Construtores}
+
+Em Julia existem construtores e estes são usados para instanciar Tipos Compostos. Desta forma, na nossa implementação, os construtores na verdade instanciam um objeto do que seria uma classe. Como já descrito anteriormente, também foi utilizado o construtor para fazer o \textit{binding} entre funções do arquivo que representa a classe com as funções que são atributos do Tipo Composto, fazendo assim existirem métodos.
+
+O uso desses construtores em uma instanciação e sua definição pode ser visto abaixo:
+\begin{lstlisting}[frame=single]
+
+[...]
+# Arquivo frogger.jl
+enemy1 = Car(15, 18)
+
+[...]
+
+# Arquivo car.jl
+
+include("./enemy.jl")
+
+abstract type CarClassType  <: EnemyClassType end  
+
+type Car <: CarClassType 
+    super::Enemy # 'Superclass'
+	Car(x,y) = new(Enemy(x,y,'@',2,2)) # public
+end
+
+\end{lstlisting}
+\section{Destrutores}
+
+Julia possui um coletor de lixo (Garbage Collector) de forma que não é necessária a implementação de um destrutor.
+
+\section{Espaços de nome diferenciados}
+
+
+Em Julia os módulos permitem que sejam criadas definições de alto nível sem se preocupar com conflitos de nome quando o código é usado junto algum código externo. Dentro de um módulo, é possível controlar quais nomes de outros módulos estão visíveis (via importação) e especificar quais os nomes devem ser públicos (via exportação). 
+
+Inicialmente todas as classes as quais desenvolvemos eram na verdade módulos. Desta forma, ficava fácil trabalhar com estas classes e com seus espaços de nome diferenciados, pois para usar uma classe era necessário importa-la e apenas o que foi exportado do módulo ficaria disponível. No caso de conflitos de nomes, poderia se utilizar como prefixo o nome do módulo, seguindo de ponto, como por exemplo \textbf{ModuloA.UmaClasseExemplo} e \textbf{ModuloB.UmaClasseExemplo}.
+
+No entanto, notamos que com o uso de módulos, não era possível o funcionamento correto da herança, pois os supertipos ficavam limitados ao escopo do módulo. Explicando um pouco melhor, se por exemplo fosse criada uma lista com objetos do tipo CarClassType e TrunkClassType, essa lista deveria poder ser considerada uma lista do tipo GameObjectClassType, já que ambos os tipos são filhos deste supertipo. No entanto, devido ao uso destes módulos, um objeto da classe Car (que pertence ao tipo CarClassType)  tinha como supertipo o \textbf{CarModule.GameObjectClassType}, ou seja, seu supertipo ficava atrelado ao módulo, fazendo com que Car e Trunk não tivessem o mesmo supertipo GameObjectClassType, pois o supertipo de Trunk era \textbf{TrunkModule.GameObjectClassType}.
+
+Para resolver este problema, não foram mais utilizados módulos e o mecanismo de herança funciona como descrito na próxima seção. A consequência disso, é que para se ter acesso a classes e seus métodos, é necessário apenas realizar o comando \textit{include}:
+\begin{lstlisting}[frame=single]
+include("./game_objects/car.jl")
+[...]
+enemy1 = Car(15, 18)
+[...]
+\end{lstlisting}
+
+No caso de conflito de nomes, o último incluído é o válido. Isso faz que o uso dos \textit{includes} seja feito com mais cautela, para evitar esse tipo de problema.
+
+\section{Mecanismo de herança}
+
+Para o funcionamento do mecanismo de herança, usa-se o mecanismo da linguagem de \textit{supertipos}. Para uma classe estender a outra, essa deve incluir (comando \textit{includes}) o arquivo da mesma e seu Tipo Concreto deve ser um subtipo de um tipo abstrato \textbf{deste} módulo, que é um \textbf{subtipo do tipo abstrato da classe pai}. Explicando um pouco melhor, se a classe EnemyClass herda de GameObject, esta necessariamente precisa que seu tipo abstrato interno EnemyClassType seja um subtipo de GameObjectClassType e que o tipo concreto Enemy seja do tipo EnemyClassType. Isso permite que por exemplo, alguma função que receba por parâmetro um GameObjectClassType, possa receber um objeto EnemyClassType, já que este é um subtipo de GameObjectClassType. Isso ficará mais evidente no trecho que código que mostrado posteriormente.
+
+Para que os atributos sejam herdados da classe pai, a única forma encontrada pelo grupo de isso funcionar corretamente é que um dos atributos do filho seja um atributo que por convenção foi chamado de \textit{super}, que nada mais é do que um objeto do Tipo Concreto da classe pai. Assim, o construtor do filho deve chamar (de forma implícita para quem quer instanciar essa classe) o construtor do pai. Isso pode ser visto no trecho abaixo:
+
+\begin{lstlisting}[frame=single]
+type Enemy  <: EnemyClassType 
+    super::GameObject # 'Superclass'
+    _max_speed::Int
+    move::Function # Public method
+	Enemy(x, y, symbol, size, speed) =
+	new(GameObject(x, y, 
+	symbol, size), 
+	speed, move) # public
+end
+\end{lstlisting}
+
+Para acessar os atributos e métodos da \textit{superclasse}, necessariamente precisa-se acessar de forma semelhante a seguinte:
+\begin{lstlisting}[frame=single]
+objeto.super.metodo_herdado(objeto.super, param1, param2)
+\end{lstlisting}
+
+
+Existem também classes abstratas. Estas, por definição, não podem serem instanciadas, apenas estendidas por uma classe concreta que então pode ser instanciada. Para que isso fosse possível em Julia, uma classe abstrata, nada mais é que um arquivo que possui também um tipo abstrato associado, também com funções, mas não existe um Tipo Composto, de forma que então este não pode ser instanciado diretamente. Apenas quem herda pode instanciar e usar as funções definidas nesta classe abstrata. 
+
+Uma grande diferença, devido a nossa implementação, é que como não há um Tipo Composto não há atributos dessa classe abstrata que são herdados pelos filhos, é possível apenas herdar as funções de forma que os filhos devem associar essas funções como um atributo seu. Além disso, o atributo \textit{super} que aponta para a classe Pai somente pode apontar para um Avô ou apontar para ninguém, uma vez que \textit{super} é sempre um atributo de um Tipo Composto. Infelizmente o grupo não encontrou alguma outra forma de representar uma classe abstrata nessa linguagem. Segue exemplo de uma classe abstrata e de uma classe filha que a implementa:
+\begin{lstlisting}[frame=single]
+#CLASSE ABSTRATA
+#ARQUIVO movable_object.jl
+include("./game_object.jl")
+
+abstract type MovableObjectAbstractClassType 
+<: GameObjectClassType  end  
+
+MAX_SCREEN_X_SIZE = 80
+
+function move(self::MovableObjectAbstractClassType)
+    current_x_pos = self.super.get_x_pos(self.super)
+    new_x_pos = current_x_pos - rand(1:2)
+    if new_x_pos <= 1
+        self.super.set_x_pos(self.super, MAX_SCREEN_X_SIZE 
+        - self.super.get_size(self.super))
+    else
+        self.super.set_x_pos(self.super, new_x_pos)
+    end
+end
+
+
+---------------------------
+#CLASSE FILHA CONCRETA
+#ARQUIVO floating_object.jl
+
+
+include("./movable_object.jl")
+include("./game_object.jl")
+
+abstract type FloatingObjectType  
+<: MovableObjectAbstractClassType end  
+
+type FloatingObject <: FloatingObjectType 
+	super::GameObject # 'Superclass'
+    move::Function # Public method
+	FloatingObject(x, y, symbol, size)
+	= new(GameObject(x, y, symbol, size), move)
+end
+
+
+
+\end{lstlisting}
+
+Note que FloatingObject tem o atributo \textit{move} que é o método de mover o objeto. É feito o \textit{binding} da função \textit{move} com esse atributo formando o método usando o construtor, conforme já foi descrito em seções anteriores. No entanto percebe-se que \textbf{a função \textit{move} não está definida na classe FloatingObject e sim na sua classe abstrata pai} definida no arquivo movable\_object.jl. Note que \textbf{não é possível realizar a instanciação de algum objeto da classe abstrata} do arquivo movable\_object.jl de forma a se comportar corretamente como uma classe abstrata.
+
+
+O mecanismo de herança foi bastante utilizado neste trabalho, em que temos até 4 níveis de hierarquia. Temos a classe pai de todos os objetos do jogo que é a classe GameObject. O diagrama \textbf{simplificado} das classes filhas de GameObject  pode ser visto na figura \ref{fig:figura2}.
+
+\begin{figure}[htb]
+    \centering
+     \caption{UML simplificado da hierarquia de GameObjects}
+    \fbox{
+        \includegraphics[width=10cm,height=16cm,keepaspectratio,angle=0]{images/UML.png}
+    }
+    \label{fig:figura2}
+\end{figure}
+
+ 
+
+
+\section{Polimorfismo por inclusão}
+
+Na classe Map desenvolvida, que é responsável por mostrar o mapa colocando os objetos sobre o mesmo, é possível verificar um polimorfismo. Isso porque é chamado os métodos get\_size, get\_y\_pos, get\_x\_pos e get\_symbol de uma lista de objetos, em que estes são de classes diferentes mas todos herdam de GameObject, o qual possui esses métodos. A mesma coisa acontece com a classe controller que chama o método \textit{move} de todos os GameObjects, sem saber se estes são da classe Car, Truck ou qualquer outra, pois todas essas classes herdam GameObject.
+\begin{lstlisting}[frame=single]
+function move_objects(game_objects)  #private function
+    for i=1:size(game_objects, 1)
+        game_objects[i].super.move(game_objects[i].super)
+    end
+end
+\end{lstlisting}
+\section{Polimorfismo paramétrico}
+
+Julia fornece suporte a Tipos Paramétricos. Estes são semelhante a Generics de Java, ou Templates em C. Basicamente os tipos podem receber parâmetros, de modo que as declarações de tipo introduzem novos tipos - um para cada combinação possível de valores de parâmetros.
+
+No desenvolvimento deste jogo, para demonstrar o uso deste polimorfismo, mesmo que não necessário neste caso, implementamos a classe Map com o parâmetro T:
+\begin{lstlisting}[frame=single]
+
+include("./collision_manager.jl")
+
+type Map{T} 
+    _map::Array{Any,2}
+    _game_objects::Array{T,1}
+    get_game_objects::Function
+    show::Function
+    collision_manager::CollisionManager
+    Map{T}(game_objects) where {T} = 
+    new(readdlm("map.txt"), game_objects, 
+    get_game_objects, show_map, CollisionManager())
+end
+
+[...]
+\end{lstlisting}
+
+Note que T pode ser qualquer tipo. É na chamada do contrutor de Map que este tipo é definido. Como neste caso o Array de GameObjects deve justamente ser do tipo GameObject isso é determinado na criação do objeto:
+\begin{lstlisting}[frame=single]
+[...]
+map = Map{GameObjectClassType}(game_objects)
+[...]
+\end{lstlisting}
+
+Esta \textbf{implementação não era necessária, uma vez que não foi utilizado um Map pra qualquer outro tipo de dado}. No entanto foi implementado assim apenas para \textbf{demonstrar a possibilidade do uso deste recurso polimórfico} utilizando esta linguagem.
+
+Outro fator a se notar é que o próprio \textit{Array}, elemento básico da linguagem é um Tipo Paramétrico, uma vez que recebe dois parâmetros, o primeiro sendo o tipo do Array e o segundo suas dimensões. 
+
+\section{Polimorfismo por sobrecarga}
+
+Um polimorfismo de sobrecarga pode ser visto na implementação da classe Enemy. Essa herda da classe abstrata MovableObjectAbstractClass, no entanto ela implementa seu método \textit{move}, mesmo que este tenha sido herdado da classe abstrata. Em sua implementação, leva-se em conta o atributo _max_speed para mover o objeto.
+
+\begin{lstlisting}[frame=single]
+include("./movable_object.jl")
+include("./game_object.jl")
+
+abstract type EnemyClassType  
+<: MovableObjectAbstractClassType end  
+
+type Enemy  <: EnemyClassType 
+    super::GameObject # 'Superclass'
+    _max_speed::Int
+    move::Function # Public method
+	Enemy(x, y, symbol, size, speed) 
+	= new(GameObject(x, y, symbol, size), speed, move) 
+end
+
+function move(self::Enemy)
+    current_x_pos = self.super.get_x_pos(self.super)
+    new_x_pos = current_x_pos - rand(1:max(self._max_speed))
+    if new_x_pos <= 1
+        self.super.set_x_pos(self.super,
+        MAX_SCREEN_X_SIZE - self.super.get_size(self.super))
+    else
+        self.super.set_x_pos(self.super, new_x_pos)
+    end
+end
+\end{lstlisting}
+
+\section{Delegates}
+    
+Considerando como a definição do uso de \textit{delegates} poder avaliar um membro de um objeto (o receptor) no contexto de outro objeto original (o remetente), podemos verificar que isto foi implementado de uma certa forma em nosso trabalho. 
+
+A classe Launcher por exemplo, foi modificada da forma original para exemplificar o uso de delegação. Existe o método \textit{init\_game} que apenas delega para o objeto de mapa a inicialização deste, e por consequência, a inicialização do jogo. Isso pode ser visto com mais detalhes no trecho abaixo:
+
+\begin{lstlisting}[frame=single]
+
+include("./controller.jl")
+
+abstract type LauncherClassType end  
+
+type Launcher <: LauncherClassType
+    start::Function # public
+    init_game::Function
+    _controller::ControllerClassType
+    _map::Any
+    _player::Any
+	Launcher() = 
+	new(start, init_game, Controller(),
+	nothing, nothing) # public
+end
+
+function init_game(self::LauncherClassType, map, player)
+    self._map = map
+    self._player = player
+    self._map.show(self._map, self._player)
+end
+
+function start(self::LauncherClassType)
+
+    while true
+
+        run(`stty raw`)	
+                       
+                      
+        self._controller.capture_keyboard(
+        self._controller, self._player, self._map)
+    end
+end
+
+\end{lstlisting}
+
+Quem "usa" o método do Launcher não consegue ver explicitamente que foi delegado ao Map a inicialização do jogo, como pode ser visto:
+\begin{lstlisting}[frame=single]
+launcher.init_game(launcher, map, frog)
+\end{lstlisting}
     
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % Conclusões
 % %
-\chapter{Conclusão Parcial}
+\chapter{Conclusão Final}
     
-    Julia não é uma linguagem de programação funcional, no entanto a mesma fornece alguns recursos de linguagens funcionais, como por exemplo funções anônimas. 
-    Mesmo não sendo uma linguagem ideal para a programação funcional, foi possível desenvolver parcialmente o jogo de forma suficientemente satisfatória. 
+    Julia não é uma linguagem de programação funcional, no entanto a mesma fornece diversos recursos de linguagens funcionais, como por exemplo funções anônimas e funções de alta ordem. 
+    Mesmo não sendo uma linguagem ideal para a programação funcional, foi possível desenvolver o jogo de forma suficientemente satisfatória, replicando todos os aspectos básicos do jogo clássico, Frogger, como a movimentação dos objetos, carros e troncos, ao longo do cenário, além da movimentação do próprio personagem.
     
-    Será feita ainda a implementação do mesmo jogo utilizando uma abordagem orientada a objetos e com isso poderemos realizar um comparativo não só entre as abordagens mas também na versatilidade desta linguagem no uso de diferentes paradigmas.
+    Já no desenvolvimento utilizando o paradigma de Orientação a Objetos, foi necessário bastante criatividade para conseguir construir conceitos e elementos básicos de orientação a objetos dentro da linguagem, como por exemplo, a definição de uma classe.
+    
+    Apesar destes contratempos, notou-se claramente que o uso de Classes e Objetos tornam mais fácil trabalhar com o domínio do problema, principalmente quando se trata de jogos. Isso porque em um jogo, é fácil definir os objetos, como por exemplo os personagens, inimigos, itens do cenário e entre outros. 
+    
+    Com o uso de herança, ficava ainda mais trivial o desenvolvimento de tipos diferentes de inimigos, uma vez que era possível criar uma classe pai mais genérica e filhos com suas características próprias.
+    
+    Realmente a grande dificuldade associada foi a falta de suporte da linguagem. No entanto, se este jogo tivesse sido desenvolvido em linguagem como Java, que é uma linguagem de fato orientada a objetos, não só teria sido mais rápido o desenvolvimento, quanto o código seria muito mais limpo, seguindo boas práticas.
+    
+    Isso demonstra claramente que para abordar um problema de desenvolvimento de \textit{software} na computação, não basta apenas programar, mas dedicar tempo para a escolha de uma linguagem adequada e o paradigma que melhor lida com o problema, e para tal, é necessário o conhecimento de diferente modelos de linguagens de programação.
 
 % Apresentar conclusão do trabalho...
 
