@@ -14,7 +14,7 @@ Base.@pure function replace_matrix(fun, ch)
 	if(fun(1)) return ":"
 	elseif(fun(2)) return "@"
 	elseif(fun(3)) return "~"
-	elseif(fun(4)) return "X"
+	elseif(fun(4)) return "#"
 	else return ch
 	end
 end
@@ -40,9 +40,9 @@ function next_stage()
 end
 
 
-# acaba o njogo se tiver colisão com X ou @, os inimigos
+# acaba o njogo se tiver colisão com # ou @, os inimigos
 function check_for_colisions(moveMap, x, y)
-	if(moveMap[y[1], x[1]] == "@" || moveMap[y[1], x[1]] == "X")
+	if(moveMap[y[1], x[1]] == "@" || moveMap[y[1], x[1]] == "#")
 		game_over()
 	elseif(moveMap[y[1], x[1]] == "^")
 		next_stage()
@@ -99,7 +99,7 @@ function moveLine(streetObject, m, direction,i ,sizei ,line)
 		#verifica em qual direcao o sapo esta sendo atropelado
 		if(direction)
 			#verifica se o objeto é capaz de atropelar o sapo
-			if(streetObject == "X"  || streetObject == "@" )
+			if(streetObject == "#"  || streetObject == "@" )
 				game_over()
 			else
 				#se nao é, ignora o sapo
@@ -108,7 +108,7 @@ function moveLine(streetObject, m, direction,i ,sizei ,line)
 		else
 			newSO = moveLine(streetObject,m,direction,i+1,sizei,line)
 			#verifica se o objeto é capaz de atropelar o sapo
-			if(newSO == "X"  || newSO == "@" )
+			if(newSO == "#"  || newSO == "@" )
 				game_over()
 			else
 				#se nao é, ignora o sapo
@@ -140,7 +140,7 @@ function print_map_rec(map, j, sizej, i, sizei)
 	    print_with_color(:cyan, map[j, i])
 	elseif(map[j, i] == ":")			
 		print(map[j, i])
-	elseif(map[j, i] == "@" || map[j, i] == "X")
+	elseif(map[j, i] == "@" || map[j, i] == "#")
 		print_with_color(:red, map[j, i])
 	elseif(map[j, i] == "^")
 		print_with_color(:magenta, map[j, i], bold=true)
@@ -176,7 +176,7 @@ function update()
 			end
 		else
 			if(randV ==0)
-				return "X"
+				return "#"
 			else
 				return "~"
 			end
