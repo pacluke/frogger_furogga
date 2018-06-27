@@ -15,22 +15,6 @@ Após instalar essa versão de `Julia`, é só entrar na pasta `Functional` do p
 
     julia --color=yes frogger.jl
 
-O sapo é representado pela letra `W`. Seus inimigos são representados pelo caractere `@` e pela letra `X`. O jogador ganha 10 pontos toda vez que avança uma linha e morre se encostar em algum inimigo. Nosso sapo sabe nadar, portanto ele pode passar pela água. Ao chegar ao fim do cenário e encostar em uma das posições do caractere `^` o jogador ganha a partida.
+O sapo é representado pela letra `W`. Seus inimigos são representados pelo caractere `@`. O jogador ganha 10 pontos toda vez que avança uma linha e morre se encostar em algum inimigo. Ao chegar ao fim do cenário e encostar em uma das posições do caractere `^` o jogador ganha a partida. É possível ficar em cima de troncos `#` para atravessar a água.
 
 Para a movimentação do sapo basta usar as teclas `w`, `a`, `s` e `d`, que o movimentam para cima, esquerda, baixo e direita, respectivamente.
-
-### Estado do projeto funcional
-| Funções Implementas | Explicitamente Pura?  | Observações |
-| ------------ | ------------ | ------------ |
-| `function change_tile(y)` | SIM |  |
-| `function replace_matrix(fun, ch)` | SIM |  |
-| `function eval_things(value01)` | SIM |  |
-| `function game_over()` | NÃO |  |
-| `function next_stage()` | NÃO | Essa função deveria passar o jogador para o próximo mapa, mas temos apenas uma fase. |
-| `function check_for_colisions(m, x, y)` | NÃO |  |
-| `function move_frog(m, left, right, up, down) ` | NÃO |  |
-| `function clear()` | NÃO |  |
-| `function print_map_rec(map, j, sizej, i, sizei)` | NÃO |  |
-
-## Versão Orientada a Objetos
-Em construção...
