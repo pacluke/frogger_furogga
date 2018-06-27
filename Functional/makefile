@@ -1,4 +1,5 @@
+LJULIA = ../jlinstall/bin/Julia
 all: frogger
 
 frogger:
-	julia --color=yes frogger.jl
+	$(LJULIA) --color=yes frogger.jl
