@@ -84,5 +84,22 @@ map = Map{GameObjectClassType}(game_objects)
 
 launcher = Launcher()
 
+print_with_color(:red, "\n\n\t##FROGGER##\t\t Versão OO 1.0\n\n")
+print_with_color(:cyan, "\t\tInstruções:")
+print_with_color(:red, "\n\n\tA/a = ")
+print_with_color(:cyan, "move para a esquerda\n")
+print_with_color(:red, "\n\n\tW/w = ")
+print_with_color(:cyan, "move para cima\n")
+print_with_color(:red, "\n\n\tS/s = ")
+print_with_color(:cyan, "move para baixo\n")
+print_with_color(:red, "\n\n\tD/d = ")
+print_with_color(:cyan, "move para a direita\n")
+print_with_color(:red, "\n\n\tQ/q = ")
+print_with_color(:cyan, "sai do jogo\n")
+
+print_with_color(:white, "\n\t\tAperte enter para continuar...\n")
+
+read(STDIN, Char)
+
 launcher.init_game(launcher, map, frog)
 launcher.start(launcher)
