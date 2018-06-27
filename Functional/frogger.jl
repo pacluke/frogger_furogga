@@ -166,30 +166,27 @@ end
 
 #Atualiza o jogo
 function update()
-
-moveAllMap(function fun(j)
-	randV = rand(Int) %2
-	if(j>RIVER_DIVISION)
-		if(randV ==0)
-			return "@"
+	moveAllMap(function fun(j)
+		randV = rand(Int) %2
+		if(j>RIVER_DIVISION)
+			if(randV ==0)
+				return "@"
+			else
+				return ":"
+			end
 		else
-			return ":"
+			if(randV ==0)
+				return "X"
+			else
+				return "~"
+			end
 		end
-	else
-		if(randV ==0)
-			return "X"
-		else
-			return "~"
-		end
-	end
-end,
-m,STATIC_LINES,1,size(m,1))
+	end,
+	m,STATIC_LINES,1,size(m,1))
 
-clear()
-print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
-print_map_rec(m, 1, size(m,1), 1, size(m,2))
-
-
+	clear()
+	print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
+	print_map_rec(m, 1, size(m,1), 1, size(m,2))
 end
 
 #move todas as linhas gerando objeto apartir da funcao do parametro
@@ -198,7 +195,7 @@ function moveAllMap(funGenerateOBJ,map, unmovableLines,j,sizej)
 		j=moveTomovable(unmovableLines,j)
 	end
 	if(j<sizej)
-		print("mexe:$j\n")
+		# print("mexe:$j\n")
 		newOBJ = funGenerateOBJ(j)
 		if(j%2 == 0)
 			moveLine(newOBJ,map,true,2,(size(m,2)-2),j)
@@ -220,6 +217,25 @@ function moveTomovable(unmovableLines,j)
 	#function body
 end
 
+# ========================================
+
+
+print_with_color(:red, "\n\n\t##FROGGER##\t\t Versão funcional 1.0\n\n")
+print_with_color(:cyan, "\t\tInstruções:")
+print_with_color(:red, "\n\n\tA/a = ")
+print_with_color(:cyan, "move para a esquerda\n")
+print_with_color(:red, "\n\n\tW/w = ")
+print_with_color(:cyan, "move para cima\n")
+print_with_color(:red, "\n\n\tS/s = ")
+print_with_color(:cyan, "move para baixo\n")
+print_with_color(:red, "\n\n\tD/d = ")
+print_with_color(:cyan, "move para a direita\n")
+print_with_color(:red, "\n\n\tQ/q = ")
+print_with_color(:cyan, "sai do jogo\n")
+
+print_with_color(:white, "\n\t\tAperte enter para continuar...\n")
+
+read(STDIN, Char)
 
 
 
@@ -229,17 +245,14 @@ global stage = 01
 global score = 0
 const global STATIC_LINES =[1,2,11,20,21] 
 const global RIVER_DIVISION = 11
-global m = map(x -> replace_matrix(eval_things(x), x), readdlm("map3.txt"))
+global m = map(x -> replace_matrix(eval_things(x), x), readdlm("map.txt"))
 clear()
 
+# ========================================
 
 
 print_with_color(:red, "    ##FROGGER##\t\tSTAGE: $stage \t\tSCORE: $score\n\r")
 print_map_rec(m, 1, size(m,1), 1, size(m,2))
-
-
-
-
 
 
 while true
